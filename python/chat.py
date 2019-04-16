@@ -61,7 +61,9 @@ class ChatFrame(tk.Frame):
         '''handle sending'''
         msg = self.my_msg.get()
         self.my_msg.set("")  # clears input
-        self.producer.publish(self.user_name + "> " + msg)
+        pubmsg = self.user_name + "> " + msg
+        self.producer.publish(pubmsg)
+        # todo: reconnect on drop
 
     def process_inbound(self):
         '''process inbound messages queue'''
@@ -80,6 +82,7 @@ class ChatFrame(tk.Frame):
                 self.listbox.see(tk.END)
             except queue.Empty:
                 pass
+        self.producer.process_data_events()
         self.after(200, self.process_inbound)
 
 

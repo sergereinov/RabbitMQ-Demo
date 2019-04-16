@@ -60,6 +60,7 @@ def meter_reading():
         msg = {'id':meter_id, 'ts':time.time(), 'value':value, 'state': State.VALUE}
         meter_publish(msg)
         last_value = value
+    producer.process_data_events()
     root.after(1000, meter_reading)
 
 #mark start

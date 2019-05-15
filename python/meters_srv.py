@@ -93,9 +93,10 @@ def callback(ch, method, properties, body):
 
             #report about DB update
             channel.basic_publish(
-                exchange=Cfg.AFTER_UPD_EXCHANGE_NAME,
-                routing_key=Cfg.ROUTE_KEY_FACILITY + '.' + meter_id,
-                body='')
+                exchange = Cfg.AFTER_UPD_EXCHANGE_NAME,
+                routing_key = Cfg.ROUTE_KEY_FACILITY + '.' + meter_id,
+                body = bytes(json.dumps({'id':meter_id}), "utf8")
+            )
 
         # ACK for meter's message
         ch.basic_ack(delivery_tag=method.delivery_tag)
